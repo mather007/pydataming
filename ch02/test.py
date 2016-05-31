@@ -1,9 +1,13 @@
+#!/usr/bin/python
 '''
 Created on 2016年5月31日
 
 @author: baby
 '''
 import json
+import pandas
+from _collections import defaultdict
+
 
 path = '/home/baby/workplace/pydata-book/ch02/usagov_bitly_data2012-03-16-1331923249.txt'
 records = [json.loads(line) for line in open(path)]
@@ -18,4 +22,17 @@ def get_counts(seq):
             counts[tz] = 1
     return counts
 
-print(get_counts(time_zones))
+def get_counts2(seq):
+    counts = defaultdict(int) #初始化一个字典所有的值都是0
+    for x in seq:
+        counts[x] += 1
+    return counts
+
+def top_counts(count_dict,n=10):
+    value_key = [(v,k) for k,v in count_dict.items()]
+    value_key.sort()
+    return value_key[-n:]
+
+counts = get_counts(time_zones)
+print(top_counts(counts, 10)) 
+
